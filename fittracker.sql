@@ -5,4 +5,5 @@ DROP DATABASE fittracker;
 CREATE DATABASE fittracker;
 \connect fittracker
 
-\i jobly-schema.sql
+\i fittracker-schema.sql
+\i fittracker-seed.sql

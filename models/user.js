@@ -2,7 +2,6 @@
 const db = require("../db");
 const bcrypt = require("bcrypt");
 const { NotFoundError, BadRequestError, UnauthorizedError } = require("../expressError");
-
 const { BCRYP_WORK_FACTOR } = require("../config");
 
 class User {
@@ -32,7 +31,7 @@ class User {
         if(duplicateCheck.rows[0]){
             throw new BadRequestError(`Duplicate username: ${username}`);
         }
-
+        console.log(BCRYP_WORK_FACTOR);
         const hashedPassword = await bcrypt.hash(password, BCRYP_WORK_FACTOR);
 
         const result = await db.query(
@@ -52,3 +51,5 @@ class User {
 
     }
 }
+
+module.exports = User;
