@@ -1,4 +1,3 @@
-
 const jsonschema = require("jsonschema");
 const express = require("express");
 const router = new express.Router();
@@ -31,15 +30,12 @@ router.post("/token", async function (req, res, next) {
 // POST /auth/register
 router.post("/register", async function (req, res, next) {
     try {
-        console.log("line 34 running")
         const validator = jsonschema.validate(req.body, userRegisterSchema);
         if(!validator.valid){
             const errs = validator.errors.map(e => e.stack);
             throw new BadRequestError(errs);
         }
-        console.log("assinging newUser")
         const newUser = await User.register({ ...req.body });
-        console.log("creating token");
         const token = createToken(newUser);
         return res.status(201).json({ token });
     } catch (err){
