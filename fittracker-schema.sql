@@ -9,8 +9,8 @@ CREATE TABLE Users (
 );
 
 -- Create Workouts table
-CREATE TABLE Workouts (
-    WorkoutId SERIAL PRIMARY KEY,
+CREATE TABLE Cached_Workouts (
+    WorkoutId INT PRIMARY KEY,
     Workout_Name TEXT NOT NULL,
     BodyPart TEXT NOT NULL,
     GifUrl TEXT NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE Workouts (
 CREATE TABLE UserWorkoutMapping (
     MappingId SERIAL PRIMARY KEY,
     UserId INT REFERENCES Users(UserId),
-    WorkoutId INT REFERENCES Workouts(WorkoutId),
+    Cached_WorkoutId INT REFERENCES Cached_WorkoutsWorkouts(WorkoutId),
     PlaylistName TEXT,
     Sets INT,
     Reps INT,
