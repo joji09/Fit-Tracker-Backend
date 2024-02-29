@@ -29,16 +29,6 @@ router.get("/exercises/:bodyPart", async function (req, res, next){
     }
 });
 
-//  TODO: bodyPart & Equipment filter to be added
-router.get("/exercises", ensureLoggedIn, async function (req, res, next){
-    try {
-        const exercises = await Workout.fetchWorkouts();
-        return res.json({ exercises });
-    } catch (error) {
-        return next(error);
-    }
-});
-
 router.get("/exercise/:id", ensureLoggedIn, async function (req, res, next){
     try{
         const { id } = req.params

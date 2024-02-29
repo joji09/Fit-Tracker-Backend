@@ -5,9 +5,7 @@ function  createToken(user){
     let payload = {
         username: user.username,
     };
-
-    console.log(payload);
-
+    
     return jwt.sign(payload, SECRET_KEY);
 }
 
