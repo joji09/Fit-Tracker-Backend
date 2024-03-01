@@ -7,7 +7,7 @@ const { ensureLoggedIn } = require("../middleware/auth");
 
 const router = new express.Router();
 
-
+// fetches bodyPartList
 router.get("/bodyPartList", async function (req, res, next) {
     
     try {
@@ -18,7 +18,7 @@ router.get("/bodyPartList", async function (req, res, next) {
     }
 });
 
-// testing body part request
+// fetches exercise based on bodyPart
 router.get("/exercises/:bodyPart", async function (req, res, next){
     try {
         const { bodyPart } = req.params;
@@ -29,6 +29,7 @@ router.get("/exercises/:bodyPart", async function (req, res, next){
     }
 });
 
+// fetches exercises by their id in the API
 router.get("/exercise/:id", ensureLoggedIn, async function (req, res, next){
     try{
         const { id } = req.params

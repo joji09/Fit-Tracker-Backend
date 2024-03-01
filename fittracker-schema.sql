@@ -26,6 +26,7 @@ CREATE TABLE UserWorkoutMapping (
     UserId INT REFERENCES Users(UserId),
     Cached_WorkoutId INT REFERENCES Cached_WorkoutsWorkouts(WorkoutId),
     PlaylistName TEXT,
+    DayOfWeek TEXT,
     Sets INT,
     Reps INT,
     Weight INT

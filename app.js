@@ -6,6 +6,7 @@ const { authenticateJWT } = require("./middleware/auth");
 const authRoutes = require("./routes/auth");
 const UsersRoutes = require("./routes/users");
 const playlistRoutes = require("./routes/playlist");
+const WorkoutRoutes = require("./routes/workouts");
 const { NotFoundError } = require("./expressError");
 
 
@@ -19,6 +20,7 @@ app.use(authenticateJWT);
 app.use("/auth", authRoutes);
 app.use("/users", UsersRoutes);
 app.use("/playlist", playlistRoutes);
+app.use("/workout", WorkoutRoutes);
 
 app.use(function (req, res, next) {
     return next(new NotFoundError);

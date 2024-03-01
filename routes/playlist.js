@@ -35,4 +35,28 @@ router.delete("/playlist/remove/:mappingId", async (req, res, next) => {
     }
 });
 
+// Creates a new playlist
+router.post("/playlist/create", async (req, res, next) => {
+    const { userId, playlistName, dayOfWeek, exercises } = req.body;
+
+    try {
+        for (const exercise of exercises) {
+            await Playlist.addExerciseToPlaylist(userId, exercise.workoutId, playlistName, dayOfWeek, exercise.sets, exercise.reps, exercise.weight); 
+        }
+        res.json({ message: "Playlist created successfully" });
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.delete("/playlist/remove/:userId/:playlistName", async (req, res, next) => {
+    const { userId, playlistName } = req.params;
+    try {
+        await Playlist.removePlaylist(userId, playlistName);
+        res.json({ message: "Playlist removed" });
+    } catch (error) {
+        next(error);
+    }
+})
+
 module.exports = router;
