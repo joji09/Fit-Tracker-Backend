@@ -41,7 +41,7 @@ router.post("/playlist/create", async (req, res, next) => {
 
     try {
         for (const exercise of exercises) {
-            await Playlist.addExerciseToPlaylist(userId, exercise.workoutId, playlistName, dayOfWeek, exercise.sets, exercise.reps, exercise.weight); 
+            await Playlist.createPlaylist(userId, exercise.workoutId, playlistName, dayOfWeek, exercise.sets, exercise.reps, exercise.weight); 
         }
         res.json({ message: "Playlist created successfully" });
     } catch (error) {
