@@ -2,15 +2,18 @@ const db = require("../db");
 
 class Playlist {
 
-    static async createPlaylist(userId, playlistName, workoutId, dayOfWeek, sets, reps, weight){
+    static async createPlaylist(UserId, PlaylistName, dayOfWeek){
         // Creates a playlist and assigns it days of the week.
         try {
             const result = await db.query(
-                `INSERT INTO UserWorkoutMapping (userId, Cached_WorkoutId, playlistName, dayOfWeek, Sets, Reps, Weight)
-                VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING MappingId`, [userId, workoutId, playlistName, dayOfWeek, sets, reps, weight]
+                `INSERT INTO UserPlaylist (UserId, PlaylistName, dayOfWeek)
+                VALUES ($1, $2, $3) RETURNING MappingId`,
+                [UserId, PlaylistName, dayOfWeek]
             );
-            return result.rows[0].mappingId;
+            console.log(result);
+            return result.rows[0].MappingId;
         } catch (error) {
+            console.error("Error creating playlist", error.message);
             throw new Error("Unable to create error");
         }
     }
@@ -36,7 +39,7 @@ class Playlist {
 
         try {
             const result = await db.query(
-                `SELECT * FROM UserWorkoutMapping WHERE UserId = $1`, [userId]
+                `SELECT * FROM UserPlaylist WHERE UserId = $1`, [userId]
             );
             return result.rows;
         } catch (error) {
@@ -60,7 +63,7 @@ class Playlist {
         // Removes a playlist and all its exercises
         try {
             await db.query(
-                `DELETE FROM UserWorkoutMapping WHERE UserId = $1 AND PlaylistName = $2`, [userId, playlistName]
+                `DELETE FROM UserPlaylist WHERE UserId = $1 AND PlaylistName = $2`, [userId, playlistName]
             );
         } catch (error) {
             throw new Error("Unable to remove playlist");

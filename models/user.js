@@ -45,7 +45,6 @@ class User {
         return user;
     }
 
-    // code added 2.18.24 -----
     // Given an username, return data about the user
     static async get(username){
         const userRes = await db.query(

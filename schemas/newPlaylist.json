@@ -1,0 +1,36 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "userId": {
+        "type": "string"
+      },
+      "playlistName": {
+        "type": "string"
+      },
+      "exercises": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "duration": {
+              "type": "number"
+            }
+
+          },
+          "required": ["name", "duration"]
+        }
+      },
+      "days": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        }
+      }
+    },
+    "required": ["userId", "playlistName", "exercises", "days"]
+  }
