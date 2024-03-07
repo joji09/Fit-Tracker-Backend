@@ -6,8 +6,8 @@ class Playlist {
         // Creates a playlist and assigns it days of the week.
         try {
             const result = await db.query(
-                `INSERT INTO UserPlaylist (UserId, PlaylistName, dayOfWeek)
-                VALUES ($1, $2, $3) RETURNING MappingId`,
+                `INSERT INTO UserPlaylist (UserId, PlaylistName, DayOfWeek)
+                VALUES ($1, $2, $3) RETURNING PlaylistId`,
                 [UserId, PlaylistName, dayOfWeek]
             );
             console.log(result);
@@ -39,7 +39,7 @@ class Playlist {
 
         try {
             const result = await db.query(
-                `SELECT * FROM UserPlaylist WHERE UserId = $1`, [userId]
+                `SELECT PlaylistName, DayOfWeek FROM UserPlaylist WHERE UserId = $1`, [userId]
             );
             return result.rows;
         } catch (error) {
