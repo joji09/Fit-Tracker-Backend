@@ -3,20 +3,21 @@ const express = require("express");
 
 const { BadRequestError } = require("../expressError");
 const Workout = require("../models/workouts");
+const WorkoutDb = require("../models/workoutQueries");
 const { ensureLoggedIn } = require("../middleware/auth");
 
 const router = new express.Router();
 
 // fetches bodyPartList
-router.get("/bodyPartList", async function (req, res, next) {
+// router.get("/bodyPartList", async function (req, res, next) {
     
-    try {
-        const bodyParts = await Workout.fetchBodyPartList();
-        return res.json({ bodyParts });
-    } catch (error){
-        return next(error);
-    }
-});
+//     try {
+//         const bodyParts = await Workout.fetchBodyPartList();
+//         return res.json({ bodyParts });
+//     } catch (error){
+//         return next(error);
+//     }
+// });
 
 // fetches exercise based on bodyPart
 router.get("/exercises/:bodyPart", async function (req, res, next){
@@ -38,7 +39,7 @@ router.get("/exercise/:id", ensureLoggedIn, async function (req, res, next){
     } catch (error){
         return next(error);
     }
-})
+});
 
 
 module.exports = router;

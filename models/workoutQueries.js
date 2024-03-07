@@ -16,3 +16,5 @@ class WorkoutQueries {
         }
     }
 }
+
+module.exports = WorkoutQueries;

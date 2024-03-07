@@ -15,23 +15,25 @@ class Workout {
         this.instructions = instructions;
     }
 
-    static async fetchBodyPartList(){
-        try {
-            const response = await axios.get(`${this.API_URL}/bodyPartList`, {
-                headers: {
-                    "X-RapidAPI-Key": "5bc5d4c469msh09809c71ce2f46ap16e742jsneafbec144066"
-                }
-            });
+    // Fetching static functions 
+    
+    // static async fetchBodyPartList(){
+    //     try {
+    //         const response = await axios.get(`${this.API_URL}/bodyPartList`, {
+    //             headers: {
+    //                 "X-RapidAPI-Key": "5bc5d4c469msh09809c71ce2f46ap16e742jsneafbec144066"
+    //             }
+    //         });
 
-            const bodyParts = response.data;
-            console.log(bodyParts);
+    //         const bodyParts = response.data;
+    //         console.log(bodyParts);
 
-            return bodyParts;
-        } catch (error){
-            console.error("Error fetching bodyPartList from API", error.message);
-            throw new BadRequestError
-        }
-    }
+    //         return bodyParts;
+    //     } catch (error){
+    //         console.error("Error fetching bodyPartList from API", error.message);
+    //         throw new BadRequestError
+    //     }
+    // }
 
     static async fetchWorkoutsByBodyPart(bodyPart){
         try {
