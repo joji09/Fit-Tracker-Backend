@@ -22,7 +22,6 @@ router.post("/playlist/add", async (req, res, next) => {
 // Get user's playlist
 router.get("/playlist", async (req, res, next) => {
     const { userId } = req.query;
-    console.log("User ID:", userId);
     try {
         const userPlaylist = await Playlist.getUserPlaylist(userId);
         res.json({ userPlaylist });
@@ -44,7 +43,6 @@ router.delete("/playlist/remove/:mappingId", async (req, res, next) => {
 
 // Creates a new playlist
 router.post("/playlist/create", async (req, res, next) => {
-    console.log(req.body);
     const { userId, playlistName, dayOfWeek } = req.body;
 
     // const validation = jsonschema.validate(req.body, newPlaylist);
@@ -54,7 +52,6 @@ router.post("/playlist/create", async (req, res, next) => {
 
     try {
         await Playlist.createPlaylist(userId, playlistName, dayOfWeek);
-        console.log(userId);
         res.json({ message: "Playlist created successfully" });
     } catch (error) {
         next(error);

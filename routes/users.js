@@ -12,6 +12,7 @@ const router = express.Router();
 router.get("/:username", ensureLoggedIn, async function (req, res, next) {
     try {
         const user = await User.get(req.params.username);
+        console.log(user);
         return res.json({ user });
     } catch (err){
         return next(err);
@@ -20,16 +21,20 @@ router.get("/:username", ensureLoggedIn, async function (req, res, next) {
 
 router.get("/userId/:username", ensureLoggedIn, async function (req, res, next) {
     try {
-        // const { username } = req.params;
+        console.log(req.params);
+        const username = req.params.username;
         console.log("requesting usernameId")
-        console.log(username);
         const user = await User.getUserId(username);
-        if(!user) throw new NotFoundError(`User with username ${req.params.username} not found`);
-        return res.json({ userId: user.userId });
+        console.log(`Result ${user}`);
+
+        if(!user) throw new NotFoundError(`User with username ${username} not found`);
+
+        // console.log(res.json({ user }));
+        return res.json({ user });
     } catch (error) {
         return next(error);
     }
-})
+});
 
 router.patch("/:username", ensureLoggedIn, async function (req, res, next) {
     try { 

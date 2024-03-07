@@ -7,9 +7,8 @@ CREATE TABLE Users (
   Email TEXT UNIQUE NOT NULL
 );
 
--- Creates Cached_Workouts table
 CREATE TABLE Cached_Workouts (
-  WorkoutId INT PRIMARY KEY,
+  WorkoutId SERIAL PRIMARY KEY,
   Workout_Name TEXT NOT NULL,
   BodyPart TEXT NOT NULL,
   GifUrl TEXT NOT NULL,
@@ -19,32 +18,24 @@ CREATE TABLE Cached_Workouts (
   Duration INTERVAL
 );
 
--- Create UserWorkoutMapping table for playlists
 CREATE TABLE UserWorkoutMapping (
-  MappingId SERIAL PRIMARY KEY,  
-  UserId INT,
-  Cached_WorkoutId INT,
+  MappingId SERIAL PRIMARY KEY,
+  UserId INT REFERENCES Users(UserId),
+  Cached_WorkoutId INT REFERENCES Cached_Workouts(WorkoutId),
   Sets INT,
   Reps INT,
-  Weight INT,
-  FOREIGN KEY (UserId) REFERENCES Users (UserId),
-  FOREIGN KEY (Cached_WorkoutId) REFERENCES Cached_Workouts (WorkoutId)
+  Weight INT
 );
 
 CREATE TABLE UserPlaylist (
-  -- UserPlaylistId INT PRIMARY KEY,
-  UserId INT,
-  MappingId SERIAL PRIMARY KEY,
+  PlaylistId SERIAL PRIMARY KEY,
+  UserId INT REFERENCES Users(UserId),
   PlaylistName TEXT,
-  DayOfWeek TEXT,
-  FOREIGN KEY (UserId) REFERENCES Users (UserId),
-  FOREIGN KEY (MappingId) REFERENCES UserWorkoutMapping (MappingId)
+  DayOfWeek TEXT
 );
 
--- ALTER TABLE UserPlaylist ADD FOREIGN KEY (UserId) REFERENCES Users (UserId);
-
--- ALTER TABLE UserWorkoutMapping ADD FOREIGN KEY (UserId) REFERENCES Users (UserId);
-
--- ALTER TABLE UserWorkoutMapping ADD FOREIGN KEY (MappingId) REFERENCES UserPlaylist (MappingId);
-
--- ALTER TABLE UserWorkoutMapping ADD FOREIGN KEY (Cached_WorkoutId) REFERENCES Cached_Workouts (WorkoutId);
+CREATE TABLE UserPlaylistMapping (
+  UserPlaylistId INT REFERENCES UserPlaylist(PlaylistId),
+  MappingId INT REFERENCES UserWorkoutMapping(MappingId),
+  PRIMARY KEY (UserPlaylistId, MappingId)
+);

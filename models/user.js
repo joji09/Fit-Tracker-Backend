@@ -60,13 +60,18 @@ class User {
     }
 
     static async getUserId(username) {
+        console.log(`getUserId username ${username}`);
         const result = await db.query(
             `SELECT UserId FROM Users WHERE Username = $1`, [username],
         );
-        return result.rows[0];
+
         const user = result.rows[0];
+        console.log(`after query request, user is ${user}`);
+
         if (!user) throw new NotFoundError(`User with username: ${username} not found`);
-        return user.UserId;
+        
+        console.log(`returning userid ${user.userid}`);
+        return user.userid;
     }
 
     // username updates their own data, to be used to edit their profile.
