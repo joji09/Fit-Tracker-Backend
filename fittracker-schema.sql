@@ -9,6 +9,7 @@ CREATE TABLE Users (
 
 CREATE TABLE Cached_Workouts (
   WorkoutId SERIAL PRIMARY KEY,
+  ExerciseId INT,
   Workout_Name TEXT NOT NULL,
   BodyPart TEXT NOT NULL,
   GifUrl TEXT NOT NULL,

@@ -18,16 +18,18 @@ class Playlist {
         }
     }
 
-    static async addExerciseToPlaylist(userId, workoutId, playlistName, sets, reps, weight){
+    static async addExerciseToPlaylist(userId, workoutId, playlistName){
         // Add an exercise to user's playlist
 
         try {
+            console.log(userId);
+            console.log(workoutId);
+            console.log(playlistName);
             const result = await db.query(
-                `INSERT INTO UserWorkoutMapping (UserId, Cached_WorkoutId, PlaylistName, Sets, Reps, Weight) VALUES ($1, $2, $3, $4, $5, %6)
+                `INSERT INTO UserWorkoutMapping (UserId, Cached_WorkoutId, PlaylistName) VALUES ($1, $2, $3)
                 RETURNING MappingId`,
-                [userId, workoutId, playlistName, sets, reps, weight]
+                [userId, workoutId, playlistName]
             );
-
             return result.rows[0];
         } catch (error) {
             throw new Error("Unable to add exercise to playlist");
@@ -39,7 +41,7 @@ class Playlist {
 
         try {
             const result = await db.query(
-                `SELECT PlaylistName, DayOfWeek FROM UserPlaylist WHERE UserId = $1`, [userId]
+                `SELECT PlaylistId, PlaylistName, DayOfWeek FROM UserPlaylist WHERE UserId = $1`, [userId]
             );
             return result.rows;
         } catch (error) {
