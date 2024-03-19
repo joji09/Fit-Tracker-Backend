@@ -4,15 +4,18 @@ const express = require("express");
 const router = express.Router();
 const Playlist = require("../models/playlist");
 const newPlaylist = require("../schemas/newPlaylist.json");
+const workoutQueries = require("../models/workoutQueries");
 
 
 
 // Add exercise to user's playlist
 router.post("/playlist/add", async (req, res, next) => {
-    const { userId, workoutId, playlistName, sets, reps, weight} = req.body;
-
+    const { userId, exerciseId, workoutName, bodyPart, playlistId } = req.body;
     try {
-        const mappingId = await Playlist.addExerciseToPlaylist(userId, workoutId, playlistName, sets, reps, weight);
+        console.log(`Exercise: ${exerciseId}`);
+        console.log(`Workout Name: ${workoutName}`);
+        const workoutId = await workoutQueries.SaveWorkout(exerciseId, workoutName, bodyPart);
+        const mappingId = await Playlist.addExerciseToPlaylist(userId, exerciseId, playlistId);
         res.json({ mappingId });
     } catch (error) {
         next(error);

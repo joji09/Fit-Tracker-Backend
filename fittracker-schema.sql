@@ -7,36 +7,25 @@ CREATE TABLE Users (
   Email TEXT UNIQUE NOT NULL
 );
 
-CREATE TABLE Cached_Workouts (
+CREATE TABLE Workouts (
   WorkoutId SERIAL PRIMARY KEY,
   ExerciseId INT,
   Workout_Name TEXT NOT NULL,
-  BodyPart TEXT NOT NULL,
-  GifUrl TEXT NOT NULL,
-  Muscle_Target TEXT NOT NULL,
-  Instructions TEXT[] NOT NULL,
-  Difficulty TEXT,
-  Duration INTERVAL
+  BodyPart TEXT NOT NULL
 );
 
-CREATE TABLE UserWorkoutMapping (
-  MappingId SERIAL PRIMARY KEY,
-  UserId INT REFERENCES Users(UserId),
-  Cached_WorkoutId INT REFERENCES Cached_Workouts(WorkoutId),
-  Sets INT,
-  Reps INT,
-  Weight INT
-);
-
-CREATE TABLE UserPlaylist (
+CREATE TABLE Playlists (
   PlaylistId SERIAL PRIMARY KEY,
   UserId INT REFERENCES Users(UserId),
   PlaylistName TEXT,
   DayOfWeek TEXT
 );
 
-CREATE TABLE UserPlaylistMapping (
-  UserPlaylistId INT REFERENCES UserPlaylist(PlaylistId),
-  MappingId INT REFERENCES UserWorkoutMapping(MappingId),
-  PRIMARY KEY (UserPlaylistId, MappingId)
+CREATE TABLE PlaylistWorkouts (
+  PlaylistWorkoutId SERIAL PRIMARY KEY,
+  PlaylistId INT REFERENCES Playlists(PlaylistId),
+  WorkoutId INT REFERENCES Workouts(WorkoutId),
+  Sets INT,
+  Reps INT,
+  Weight INT
 );
