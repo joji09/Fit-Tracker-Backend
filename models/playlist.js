@@ -32,7 +32,6 @@ class Playlist {
                 throw new Error(`Playlists ${playlistName} does not exist`);
             }
 
-            console.log(playlist.rows[0].playlistid);
             const playlistId = playlist.rows[0].playlistid;
 
             console.log(`playlistId: ${playlistId}`);
