@@ -18,9 +18,27 @@ class Playlist {
     }
 
 
-    static async addExerciseToPlaylist(playlistId, workoutId, sets, reps, weight){
+    static async addExerciseToPlaylist(userId, playlistName, workoutId, playlistId, sets = 0, reps = 0, weight = 0){
         // Add an exercise to a playlist
         try {
+            // fetch playlistId
+
+            const playlist = await db.query(
+                `SELECT PlaylistId FROM Playlists WHERE UserId = $1 AND PlaylistName = $2`,
+                [userId, playlistName]
+            );
+            
+            if(playlist.rows.length === 0){
+                throw new Error(`Playlists ${playlistName} does not exist`);
+            }
+
+            console.log(playlist.rows[0].playlistid);
+            const playlistId = playlist.rows[0].playlistid;
+
+            console.log(`playlistId: ${playlistId}`);
+            console.log(`workoutId: ${workoutId}`);
+            console.log(`playlistName: ${playlistName}`);
+
             const result = await db.query(
                 `INSERT INTO PlaylistWorkouts (PlaylistId, WorkoutId, Sets, Reps, Weight)
                 VALUES ($1, $2, $3, $4, $5) RETURNING PlaylistWorkoutId`,
