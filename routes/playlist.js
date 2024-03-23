@@ -49,16 +49,39 @@ router.delete("/playlist/remove/:playlistId", async (req, res, next) => {
 
 // Creates a new playlist
 router.post("/playlist/create", async (req, res, next) => {
-    const { userId, playlistName, dayOfWeek } = req.body;
-
-    // const validation = jsonschema.validate(req.body, newPlaylist);
-    // if(!validation.valid){
-    //     return res.status(400).json({ error: validation.errors });
-    // }
+    const { userId, playlistName, days } = req.body;
 
     try {
-        await Playlist.createPlaylist(userId, playlistName, dayOfWeek);
+        console.log(req.body);
+        // console.log(`UserId: ${userId}`);
+        // console.log(`playlistName: ${playlistName}`);
+        // console.log(`dayOfWeek: ${days}`);
+        await Playlist.createPlaylist(userId, playlistName, days);
         res.json({ message: "Playlist created successfully" });
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Fetches playlistId
+router.get("/playlist/:playlistId", async (req, res, next) => {
+    const { playlistId } = req.params;
+    console.log(`PlaylistId passed: ${req.params}`);
+    try {
+        const playlistDetails = await Playlist.getPlaylistDetails(playlistId);
+        res.json({ playlistDetails });
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Fetches playlist Workouts
+router.get("/playlist/workouts/:playlistId", async (req, res, next) => {
+    const { playlistId } = req.params;
+    console.log(playlistId);
+    try {
+        const PlaylistWorkouts = await Playlist.getPlaylistWorkouts(playlistId);
+        res.json({ PlaylistWorkouts });
     } catch (error) {
         next(error);
     }

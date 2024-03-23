@@ -2,13 +2,18 @@ const db = require("../db");
 
 class Playlist {
 
-    static async createPlaylist(UserId, PlaylistName, dayOfWeek){
+    static async createPlaylist(userId, playlistName, days){
         // Creates a playlist and assigns it days of the week.
+        
+
+        // console.log(`model function: ${userId}`);
+        // console.log(`model function: ${playlistName}`);
+        // console.log(`model function: ${days}`);
         try {
             const result = await db.query(
                 `INSERT INTO Playlists (UserId, PlaylistName, DayOfWeek)
                 VALUES ($1, $2, $3) RETURNING PlaylistId`,
-                [UserId, PlaylistName, dayOfWeek]
+                [userId, playlistName, days.join(',')]
             );
             return result.rows[0].playlistId;
         } catch (error) {
@@ -60,6 +65,34 @@ class Playlist {
             return result.rows;
         } catch (error) {
             throw new Error("Unable to fetch user playlist");
+        }
+    }
+
+    static async getPlaylistDetails(playlistId) {
+        try {
+            const result = await db.query(
+                `SELECT PlaylistId, PlaylistName, DayOfWeek, Sets, Reps, Weight FROM Playlist WHERE PlaylistId = $1 `, [playlistId]
+            );
+            if (result.rows.length === 0) {
+                throw new Error("Playlist not found");
+            }
+            return result.rows[0];
+        } catch (error) {
+            console.error("Error fetching playlist details on the backend", error);
+            throw error;
+        }
+    }
+
+    static async getPlaylistWorkouts(playlistId){
+        try {
+            const result = await db.query(
+                `SELECT pw.PlaylistWorkoutId, w.Workout_Name, w.BodyPart, pw.Sets, pw.Reps, pw.Weight FROM PlaylistWorkouts pw JOIN Workouts w ON pw.WorkoutId = w.WorkoutId
+                WHERE pw.PlaylistId = $1`, [playlistId]
+            );
+            return result.rows;
+        } catch (error) {
+            console.error("Error fetching playlist workouts from the database", error);
+            throw error;
         }
     }
 
