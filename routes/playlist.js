@@ -18,7 +18,7 @@ router.post("/playlist/add", async (req, res, next) => {
         console.log(`Playlist Name: ${playlistName}`);
         const workoutId = await workoutQueries.SaveWorkout(exerciseId, workoutName, bodyPart);
         console.log(workoutId);
-        const mappingId = await Playlist.addExerciseToPlaylist(userId, playlistName, workoutId);
+        const mappingId = await Playlist.addExerciseToPlaylist(userId, playlistName, workoutId, playlistId);
         res.json({ mappingId });
     } catch (error) {
         next(error);
@@ -78,7 +78,7 @@ router.get("/playlist/:playlistId", async (req, res, next) => {
 // Fetches playlist Workouts
 router.get("/playlist/workouts/:playlistId", async (req, res, next) => {
     const { playlistId } = req.params;
-    console.log(playlistId);
+    console.log(`PlaylistId: ${playlistId}`);
     try {
         const PlaylistWorkouts = await Playlist.getPlaylistWorkouts(playlistId);
         res.json({ PlaylistWorkouts });

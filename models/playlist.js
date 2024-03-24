@@ -37,7 +37,7 @@ class Playlist {
                 throw new Error(`Playlists ${playlistName} does not exist`);
             }
 
-            const playlistId = playlist.rows[0].playlistid;
+            // const playlistId = playlist.rows[0].playlistid;
 
             console.log(`playlistId: ${playlistId}`);
             console.log(`workoutId: ${workoutId}`);
@@ -70,12 +70,14 @@ class Playlist {
 
     static async getPlaylistDetails(playlistId) {
         try {
+            console.log(`GetPlaylistDetails of: ${playlistId}`);
             const result = await db.query(
-                `SELECT PlaylistId, PlaylistName, DayOfWeek, Sets, Reps, Weight FROM Playlist WHERE PlaylistId = $1 `, [playlistId]
+                `SELECT PlaylistId, PlaylistName, DayOfWeek FROM Playlists WHERE PlaylistId = $1 `, [playlistId]
             );
             if (result.rows.length === 0) {
                 throw new Error("Playlist not found");
             }
+            console.log("Result Row:", JSON.stringify(result.rows[0]));
             return result.rows[0];
         } catch (error) {
             console.error("Error fetching playlist details on the backend", error);
@@ -85,10 +87,12 @@ class Playlist {
 
     static async getPlaylistWorkouts(playlistId){
         try {
+            console.log(`Getting getPlaylistWorkouts: ${playlistId}`);
             const result = await db.query(
                 `SELECT pw.PlaylistWorkoutId, w.Workout_Name, w.BodyPart, pw.Sets, pw.Reps, pw.Weight FROM PlaylistWorkouts pw JOIN Workouts w ON pw.WorkoutId = w.WorkoutId
                 WHERE pw.PlaylistId = $1`, [playlistId]
             );
+            console.log("Result rows:", JSON.stringify(result.rows));
             return result.rows;
         } catch (error) {
             console.error("Error fetching playlist workouts from the database", error);
