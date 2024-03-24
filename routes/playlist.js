@@ -36,16 +36,6 @@ router.get("/playlist", async (req, res, next) => {
     }
 });
 
-// Remove exercise from user's playlist
-router.delete("/playlist/remove/:playlistId", async (req, res, next) => {
-    const { playlistId } = req.params;
-    try {
-        await Playlist.removeExerciseFromPlaylist(playlistId);
-        res.json({ message: "Exercise remove from playlist" });
-    } catch (error) {
-        next(error);
-    }
-});
 
 // Creates a new playlist
 router.post("/playlist/create", async (req, res, next) => {
@@ -66,7 +56,6 @@ router.post("/playlist/create", async (req, res, next) => {
 // Fetches playlistId
 router.get("/playlist/:playlistId", async (req, res, next) => {
     const { playlistId } = req.params;
-    console.log(`PlaylistId passed: ${req.params}`);
     try {
         const playlistDetails = await Playlist.getPlaylistDetails(playlistId);
         res.json({ playlistDetails });
@@ -78,7 +67,6 @@ router.get("/playlist/:playlistId", async (req, res, next) => {
 // Fetches playlist Workouts
 router.get("/playlist/workouts/:playlistId", async (req, res, next) => {
     const { playlistId } = req.params;
-    console.log(`PlaylistId: ${playlistId}`);
     try {
         const PlaylistWorkouts = await Playlist.getPlaylistWorkouts(playlistId);
         res.json({ PlaylistWorkouts });
@@ -87,11 +75,24 @@ router.get("/playlist/workouts/:playlistId", async (req, res, next) => {
     }
 });
 
-router.delete("/playlist/remove/:userId/:playlistName", async (req, res, next) => {
-    const { userId, playlistName } = req.params;
+// deletes playlist information
+router.delete("/playlist/workouts/:playlistId/:playlistWorkoutId", async (req, res, next) => {
+    const { playlistId, playlistWorkoutId } = req.params;
     try {
-        await Playlist.removePlaylist(userId, playlistName);
+        console.log(`Route PlaylistWorkoutId: ${playlistWorkoutId}`);
+        await Playlist.removeWorkoutFromPlaylist(playlistId, playlistWorkoutId);
         res.json({ message: "Playlist removed" });
+    } catch (error) {
+        next(error);
+    }
+})
+
+// Remove exercise from user's playlist
+router.delete("/playlist/remove/:playlistId", async (req, res, next) => {
+    const {playlistId } = req.params;
+    try {
+        await Playlist.removePlaylist(playlistId);
+        res.json({ message: "Playlist deleted successfully "});
     } catch (error) {
         next(error);
     }

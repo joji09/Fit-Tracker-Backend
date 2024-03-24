@@ -92,7 +92,7 @@ class Playlist {
                 `SELECT pw.PlaylistWorkoutId, w.Workout_Name, w.BodyPart, pw.Sets, pw.Reps, pw.Weight FROM PlaylistWorkouts pw JOIN Workouts w ON pw.WorkoutId = w.WorkoutId
                 WHERE pw.PlaylistId = $1`, [playlistId]
             );
-            console.log("Result rows:", JSON.stringify(result.rows));
+            // console.log("Result rows:", JSON.stringify(result.rows));
             return result.rows;
         } catch (error) {
             console.error("Error fetching playlist workouts from the database", error);
@@ -100,14 +100,29 @@ class Playlist {
         }
     }
 
-    static async removeExerciseFromPlaylist(playlistId) {
+    static async removeWorkoutFromPlaylist(playlistId, PlaylistworkoutId) {
         // Removes exercises from the user's playlist
 
         try {
+
+            console.log(`PlaylistId: ${playlistId}`);
+            console.log(`PlaylistWorkoutId: ${PlaylistworkoutId}`);
+            const fetchworkoutId = await db.query(
+                `SELECT WorkoutId FROM PlaylistWorkouts WHERE PlaylistWorkoutId = $1`, [PlaylistworkoutId]
+            );
+
+            // console.log(`Fetching workoutId for removal of workout from playlist`);
+            // console.log(`WorkoutId: ${workoutId.rows[0].workoutid}`);
+            // console.log(`WorkoutId: ${JSON.stringify(workoutId.rows[0])}`);
+
+            const workoutId = fetchworkoutId.rows[0].workoutid
+            console.log(workoutId);
+
             await db.query(
-                `DELETE FROM PlaylistWorkouts  WHERE PlaylistWorkoutId = $1`, [playlistId]
+                `DELETE FROM PlaylistWorkouts  WHERE PlaylistId = $1 AND WorkoutId = $2`, [playlistId, workoutId]
             );
         } catch (error) {
+            console.error("Error removing workout", error);
             throw new Error("Unable to remove exercise from playlist");
         }
     }
@@ -115,10 +130,20 @@ class Playlist {
     static async removePlaylist(playlistId){
         // Removes a playlist and all its exercises
         try {
+            await db.query('BEGIN');
+
+            console.log(`Delete PlaylitsWorkouts for PlaylistId ${playlistId}`);
+            await db.query('DELETE FROM PlaylistWorkouts WHERE PlaylistId = $1', [playlistId]);
+
+            console.log(`Delete Playlits for PlaylistId ${playlistId}`);
             await db.query(
-                `DELETE FROM Playlists  WHERE UserId = $1 AND PlaylistName = $2`, [playlistId]
-            );
+                `DELETE FROM Playlists  WHERE PlaylistId = $1`, [playlistId]);
+            
+            console.log("queries completed")
+            await db.query('COMMIT');
         } catch (error) {
+            await db.query('ROLLBACK');
+            console.error("Error removing playlist", error);
             throw new Error("Unable to remove playlist");
         }
     }
