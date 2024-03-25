@@ -32,7 +32,7 @@ class User {
             throw new BadRequestError(`Duplicate username: ${username}`);
         }
        
-        console.log(BCRYPT_WORK_FACTOR);
+        // console.log(BCRYPT_WORK_FACTOR);
         const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
         const result = await db.query(

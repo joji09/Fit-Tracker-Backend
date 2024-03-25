@@ -14,7 +14,7 @@ class WorkoutQueries {
         let result;
 
         if (existingWorkout.rows[0].count > 0) {
-            console.log(`Workout with ExerciseId ${exerciseId} already exists.`);
+            // console.log(`Workout with ExerciseId ${exerciseId} already exists.`);
             result = existingWorkout.rows[0].count;
         } else {
             // Insert the workout information into the Cached_Workouts table
@@ -27,7 +27,7 @@ class WorkoutQueries {
             
             result = newWorkout.rows[0].workoutid;
 
-            console.log(`Workout with ExerciseId ${exerciseId} saved successfully`);
+            // console.log(`Workout with ExerciseId ${exerciseId} saved successfully`);
         }
             // Return the ID of the newly inserted workout
             return result;

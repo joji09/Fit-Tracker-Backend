@@ -15,26 +15,6 @@ class Workout {
         this.instructions = instructions;
     }
 
-    // Fetching static functions 
-    
-    // static async fetchBodyPartList(){
-    //     try {
-    //         const response = await axios.get(`${this.API_URL}/bodyPartList`, {
-    //             headers: {
-    //                 "X-RapidAPI-Key": "5bc5d4c469msh09809c71ce2f46ap16e742jsneafbec144066"
-    //             }
-    //         });
-
-    //         const bodyParts = response.data;
-    //         console.log(bodyParts);
-
-    //         return bodyParts;
-    //     } catch (error){
-    //         console.error("Error fetching bodyPartList from API", error.message);
-    //         throw new BadRequestError
-    //     }
-    // }
-
     static async fetchWorkoutsByBodyPart(bodyPart){
         try {
             const response = await axios.get(`${this.API_URL}/bodyPart/${bodyPart}`, {
@@ -94,6 +74,7 @@ class Workout {
             });
             if (response && response.data){
                 const { id, name, bodyPart, equipment, gifUrl, instructions } = response.data;
+                console.log(response.data);
                 return { id, name, bodyPart, equipment, gifUrl, instructions };
             } else {
                 throw new NotFoundError;

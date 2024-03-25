@@ -12,10 +12,10 @@ const workoutQueries = require("../models/workoutQueries");
 router.post("/playlist/add", async (req, res, next) => {
     const { userId, exerciseId, workoutName, bodyPart, playlistId, playlistName } = req.body;
     try {
-        console.log(`UserId: ${userId}`);
-        console.log(`Exercise: ${exerciseId}`);
-        console.log(`Workout Name: ${workoutName}`);
-        console.log(`Playlist Name: ${playlistName}`);
+        // console.log(`UserId: ${userId}`);
+        // console.log(`Exercise: ${exerciseId}`);
+        // console.log(`Workout Name: ${workoutName}`);
+        // console.log(`Playlist Name: ${playlistName}`);
         const workoutId = await workoutQueries.SaveWorkout(exerciseId, workoutName, bodyPart);
         console.log(workoutId);
         const mappingId = await Playlist.addExerciseToPlaylist(userId, playlistName, workoutId, playlistId);
@@ -75,11 +75,24 @@ router.get("/playlist/workouts/:playlistId", async (req, res, next) => {
     }
 });
 
+// updates PlaylistWorkout entries
+router.patch("/playlist/workouts/:playlistId/:playlistWorkoutId", async (req, res, next) => {
+    const { playlistId, playlistWorkoutId } = req.params;
+    const { sets, reps, weight } = req.body;
+    console.log(req.body);
+    try {
+        await Playlist.SaveWorkoutValues(playlistId, playlistWorkoutId, sets, reps, weight);
+        res.json({ message: "Values updated" });
+    } catch (error) {
+        next(error);
+    }
+});
+
 // deletes playlist information
 router.delete("/playlist/workouts/:playlistId/:playlistWorkoutId", async (req, res, next) => {
     const { playlistId, playlistWorkoutId } = req.params;
     try {
-        console.log(`Route PlaylistWorkoutId: ${playlistWorkoutId}`);
+        // console.log(`Route PlaylistWorkoutId: ${playlistWorkoutId}`);
         await Playlist.removeWorkoutFromPlaylist(playlistId, playlistWorkoutId);
         res.json({ message: "Playlist removed" });
     } catch (error) {

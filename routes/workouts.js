@@ -33,8 +33,11 @@ router.get("/exercises/:bodyPart", async function (req, res, next){
 // fetches exercises by their id in the API
 router.get("/exercise/:id", ensureLoggedIn, async function (req, res, next){
     try{
+        console.log("fetching exercise");
         const { id } = req.params
+        console.log(id);
         const exerciseIdx = await Workout.fetchExercise(id);
+        console.log(exerciseIdx);
         return res.json({ exerciseIdx });
     } catch (error){
         return next(error);

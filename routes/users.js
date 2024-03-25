@@ -21,11 +21,8 @@ router.get("/:username", ensureLoggedIn, async function (req, res, next) {
 
 router.get("/userId/:username", ensureLoggedIn, async function (req, res, next) {
     try {
-        console.log(req.params);
         const username = req.params.username;
-        console.log("requesting usernameId")
         const user = await User.getUserId(username);
-        console.log(`Result ${user}`);
 
         if(!user) throw new NotFoundError(`User with username ${username} not found`);
 

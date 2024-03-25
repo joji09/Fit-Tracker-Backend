@@ -39,9 +39,9 @@ class Playlist {
 
             // const playlistId = playlist.rows[0].playlistid;
 
-            console.log(`playlistId: ${playlistId}`);
-            console.log(`workoutId: ${workoutId}`);
-            console.log(`playlistName: ${playlistName}`);
+            // console.log(`playlistId: ${playlistId}`);
+            // console.log(`workoutId: ${workoutId}`);
+            // console.log(`playlistName: ${playlistName}`);
 
             const result = await db.query(
                 `INSERT INTO PlaylistWorkouts (PlaylistId, WorkoutId, Sets, Reps, Weight)
@@ -115,7 +115,7 @@ class Playlist {
             // console.log(`WorkoutId: ${workoutId.rows[0].workoutid}`);
             // console.log(`WorkoutId: ${JSON.stringify(workoutId.rows[0])}`);
 
-            const workoutId = fetchworkoutId.rows[0].workoutid
+            const workoutId = fetchworkoutId.rows[0].workoutid;
             console.log(workoutId);
 
             await db.query(
@@ -145,6 +145,24 @@ class Playlist {
             await db.query('ROLLBACK');
             console.error("Error removing playlist", error);
             throw new Error("Unable to remove playlist");
+        }
+    }
+
+    static async SaveWorkoutValues(playlistId, PlaylistworkoutId, Sets, Reps, Weight){
+        try {
+            const fetchworkoutId = await db.query(
+                `SELECT WorkoutId FROM PlaylistWorkouts WHERE PlaylistWorkoutId = $1`, [PlaylistworkoutId]
+            );
+            
+            const workoutId = fetchworkoutId.rows[0].workoutid;
+
+            await db.query(
+                `UPDATE PlaylistWorkouts SET sets = $1, reps = $2, weight = $3
+                WHERE PlaylistWorkoutId = $4 AND PlaylistId = $5 AND WorkoutId = $6`, [Sets, Reps, Weight, PlaylistworkoutId, playlistId, workoutId]
+            );
+        } catch (error) {
+            console.error("Error updating values", error);
+            throw error;
         }
     }
 }
