@@ -74,7 +74,6 @@ class Workout {
             });
             if (response && response.data){
                 const { id, name, bodyPart, equipment, gifUrl, instructions } = response.data;
-                console.log(response.data);
                 return { id, name, bodyPart, equipment, gifUrl, instructions };
             } else {
                 throw new NotFoundError;
