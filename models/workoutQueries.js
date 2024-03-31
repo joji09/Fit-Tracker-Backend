@@ -7,17 +7,17 @@ class WorkoutQueries {
 
             // Check if workout with the given ExerciseId already exists
         const existingWorkout = await db.query(
-            `SELECT COUNT(*) FROM Workouts WHERE ExerciseId = $1`,
+            `SELECT WorkoutId FROM Workouts WHERE ExerciseId = $1`,
             [exerciseId]
         );
         
         let result;
 
-        if (existingWorkout.rows[0].count > 0) {
-            // console.log(`Workout with ExerciseId ${exerciseId} already exists.`);
-            result = existingWorkout.rows[0].count;
+        if (existingWorkout.rows.length > 0) {
+            console.log(`Workout with ExerciseId ${exerciseId} already exists.`);
+            return existingWorkout.rows[0].workoutid;
         } else {
-            // Insert the workout information into the Cached_Workouts table
+            // Insert the workout information into the Workout table
             const newWorkout = await db.query(
                 `INSERT INTO Workouts (ExerciseId, Workout_Name, BodyPart) 
                 VALUES ($1, $2, $3)
@@ -25,12 +25,11 @@ class WorkoutQueries {
                 [exerciseId, workoutName, bodyPart]
             );
             
-            result = newWorkout.rows[0].workoutid;
-
-            // console.log(`Workout with ExerciseId ${exerciseId} saved successfully`);
+            // Returns the ID of the new workout
+            console.log(`newWorkout: ${newWorkout}`);
+            console.log(newWorkout.rows[0].workoutId);
+            return newWorkout.rows[0].workoutId;
         }
-            // Return the ID of the newly inserted workout
-            return result;
 
         } catch (error) {
             console.error("Error saving workout", error);

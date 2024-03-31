@@ -85,8 +85,10 @@ class User {
             {
                 firstName: "first_name",
                 lastName: "last_name",
-
             });
+
+            console.log(username);
+            console.log(setCols.firstName);
             const usernameVarIdx = "$" + (values.length + 1);
 
             const querySql = `UPDATE users SET ${setCols} WHERE username=${usernameVarIdx}

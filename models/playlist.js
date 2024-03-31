@@ -39,9 +39,9 @@ class Playlist {
 
             // const playlistId = playlist.rows[0].playlistid;
 
-            // console.log(`playlistId: ${playlistId}`);
-            // console.log(`workoutId: ${workoutId}`);
-            // console.log(`playlistName: ${playlistName}`);
+            console.log(`playlistId: ${playlistId}`);
+            console.log(`workoutId: ${workoutId}`);
+            console.log(`playlistName: ${playlistName}`);
 
             const result = await db.query(
                 `INSERT INTO PlaylistWorkouts (PlaylistId, WorkoutId, Sets, Reps, Weight)
@@ -110,10 +110,6 @@ class Playlist {
             const fetchworkoutId = await db.query(
                 `SELECT WorkoutId FROM PlaylistWorkouts WHERE PlaylistWorkoutId = $1`, [PlaylistworkoutId]
             );
-
-            // console.log(`Fetching workoutId for removal of workout from playlist`);
-            // console.log(`WorkoutId: ${workoutId.rows[0].workoutid}`);
-            // console.log(`WorkoutId: ${JSON.stringify(workoutId.rows[0])}`);
 
             const workoutId = fetchworkoutId.rows[0].workoutid;
             console.log(workoutId);

@@ -36,7 +36,8 @@ router.get("/userId/:username", ensureLoggedIn, async function (req, res, next) 
 router.patch("/:username", ensureLoggedIn, async function (req, res, next) {
     try { 
         const updatedUserData = req.body;
-        const { username } = req.params;
+        // const { username } = req.params;
+        const username = updatedUserData.username;
         const updatedUser = await User.update(username, updatedUserData);
 
          return res.json({ user: updatedUser });
