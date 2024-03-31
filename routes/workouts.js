@@ -23,11 +23,23 @@ router.get("/exercises/:bodyPart", async function (req, res, next){
 router.get("/exercise/:id", ensureLoggedIn, async function (req, res, next){
     try{
         console.log("fetching exercise");
-        const { id } = req.params
+        const { id } = req.params;
         console.log(id);
         const exerciseIdx = await Workout.fetchExercise(id);
         console.log(exerciseIdx);
         return res.json({ exerciseIdx });
+    } catch (error){
+        return next(error);
+    }
+});
+
+//fetches exerciseId by their WorkoutId in the Workouts Table
+router.get("/exercise/find/:workoutId", async function(req, res, next){
+    try {
+        const { workoutId } = req.params;
+        console.log(`finding exerciseId for workoutId: ${workoutId}`);
+        const exerciseId = await WorkoutDb.getExerciseId(workoutId);
+        return res.json({ exerciseId });
     } catch (error){
         return next(error);
     }

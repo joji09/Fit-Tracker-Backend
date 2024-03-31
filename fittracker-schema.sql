@@ -9,7 +9,7 @@ CREATE TABLE Users (
 
 CREATE TABLE Workouts (
   WorkoutId SERIAL PRIMARY KEY,
-  ExerciseId INT,
+  ExerciseId TEXT,
   Workout_Name TEXT NOT NULL,
   BodyPart TEXT NOT NULL
 );

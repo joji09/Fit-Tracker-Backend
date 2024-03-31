@@ -11,7 +11,6 @@ class WorkoutQueries {
             [exerciseId]
         );
         
-        let result;
 
         if (existingWorkout.rows.length > 0) {
             console.log(`Workout with ExerciseId ${exerciseId} already exists.`);
@@ -26,14 +25,25 @@ class WorkoutQueries {
             );
             
             // Returns the ID of the new workout
-            console.log(`newWorkout: ${newWorkout}`);
-            console.log(newWorkout.rows[0].workoutId);
-            return newWorkout.rows[0].workoutId;
+            console.log(newWorkout.rows[0].workoutid);
+            return newWorkout.rows[0].workoutid;
         }
 
         } catch (error) {
             console.error("Error saving workout", error);
             throw new Error("Unable to save workout to Workouts");
+        }
+    }
+
+    static async getExerciseId(workoutId) {
+        try {
+            const exerciseIdResult = await db.query(
+                `SELECT ExerciseId FROM Workouts WHERE WorkoutId = $1`, [workoutId]
+            );
+            return exerciseIdResult.rows[0].exerciseid;
+        } catch (error) {
+            console.error("Can't find that workout", error);
+            throw new Error ("Unable to find that exerciseId");
         }
     }
 }

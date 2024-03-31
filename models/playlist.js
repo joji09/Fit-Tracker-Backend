@@ -38,7 +38,7 @@ class Playlist {
             }
 
             // const playlistId = playlist.rows[0].playlistid;
-
+            console.log(`Playlist: ${playlist}`);
             console.log(`playlistId: ${playlistId}`);
             console.log(`workoutId: ${workoutId}`);
             console.log(`playlistName: ${playlistName}`);
@@ -89,7 +89,7 @@ class Playlist {
         try {
             console.log(`Getting getPlaylistWorkouts: ${playlistId}`);
             const result = await db.query(
-                `SELECT pw.PlaylistWorkoutId, w.Workout_Name, w.BodyPart, pw.Sets, pw.Reps, pw.Weight FROM PlaylistWorkouts pw JOIN Workouts w ON pw.WorkoutId = w.WorkoutId
+                `SELECT pw.PlaylistWorkoutId, w.Workout_Name, w.BodyPart, pw.Sets, pw.Reps, pw.Weight, pw.WorkoutId FROM PlaylistWorkouts pw JOIN Workouts w ON pw.WorkoutId = w.WorkoutId
                 WHERE pw.PlaylistId = $1`, [playlistId]
             );
             // console.log("Result rows:", JSON.stringify(result.rows));

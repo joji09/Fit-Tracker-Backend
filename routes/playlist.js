@@ -12,12 +12,12 @@ const workoutQueries = require("../models/workoutQueries");
 router.post("/playlist/add", async (req, res, next) => {
     const { userId, exerciseId, workoutName, bodyPart, playlistId, playlistName } = req.body;
     try {
-        // console.log(`UserId: ${userId}`);
-        // console.log(`Exercise: ${exerciseId}`);
-        // console.log(`Workout Name: ${workoutName}`);
-        // console.log(`Playlist Name: ${playlistName}`);
+        console.log(`UserId: ${userId}`);
+        console.log(`Exercise: ${exerciseId}`);
+        console.log(`Workout Name: ${workoutName}`);
+        console.log(`Playlist Name: ${playlistName}`);
         const workoutId = await workoutQueries.SaveWorkout(exerciseId, workoutName, bodyPart);
-        console.log(workoutId);
+        console.log(`WorkoutId from SaveWorkout: ${workoutId}`);
         const mappingId = await Playlist.addExerciseToPlaylist(userId, playlistName, workoutId, playlistId);
         res.json({ mappingId });
     } catch (error) {
