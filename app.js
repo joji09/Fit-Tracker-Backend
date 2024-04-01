@@ -17,6 +17,7 @@ app.use(express.json());
 app.use(morgan("tiny"));
 app.use(authenticateJWT);
 
+// Backend Routes
 app.use("/auth", authRoutes);
 app.use("/users", UsersRoutes);
 app.use("/playlist", playlistRoutes);

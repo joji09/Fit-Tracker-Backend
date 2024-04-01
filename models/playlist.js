@@ -4,11 +4,6 @@ class Playlist {
 
     static async createPlaylist(userId, playlistName, days){
         // Creates a playlist and assigns it days of the week.
-        
-
-        // console.log(`model function: ${userId}`);
-        // console.log(`model function: ${playlistName}`);
-        // console.log(`model function: ${days}`);
         try {
             const result = await db.query(
                 `INSERT INTO Playlists (UserId, PlaylistName, DayOfWeek)
@@ -37,12 +32,6 @@ class Playlist {
                 throw new Error(`Playlists ${playlistName} does not exist`);
             }
 
-            // const playlistId = playlist.rows[0].playlistid;
-            console.log(`Playlist: ${playlist}`);
-            console.log(`playlistId: ${playlistId}`);
-            console.log(`workoutId: ${workoutId}`);
-            console.log(`playlistName: ${playlistName}`);
-
             const result = await db.query(
                 `INSERT INTO PlaylistWorkouts (PlaylistId, WorkoutId, Sets, Reps, Weight)
                 VALUES ($1, $2, $3, $4, $5) RETURNING PlaylistWorkoutId`,
@@ -69,6 +58,7 @@ class Playlist {
     }
 
     static async getPlaylistDetails(playlistId) {
+        // Fetches user's playlist information
         try {
             console.log(`GetPlaylistDetails of: ${playlistId}`);
             const result = await db.query(
@@ -77,7 +67,6 @@ class Playlist {
             if (result.rows.length === 0) {
                 throw new Error("Playlist not found");
             }
-            console.log("Result Row:", JSON.stringify(result.rows[0]));
             return result.rows[0];
         } catch (error) {
             console.error("Error fetching playlist details on the backend", error);
@@ -86,13 +75,13 @@ class Playlist {
     }
 
     static async getPlaylistWorkouts(playlistId){
+        // Fetches the workouts from the user's playlist
         try {
             console.log(`Getting getPlaylistWorkouts: ${playlistId}`);
             const result = await db.query(
                 `SELECT pw.PlaylistWorkoutId, w.Workout_Name, w.BodyPart, pw.Sets, pw.Reps, pw.Weight, pw.WorkoutId FROM PlaylistWorkouts pw JOIN Workouts w ON pw.WorkoutId = w.WorkoutId
                 WHERE pw.PlaylistId = $1`, [playlistId]
             );
-            // console.log("Result rows:", JSON.stringify(result.rows));
             return result.rows;
         } catch (error) {
             console.error("Error fetching playlist workouts from the database", error);

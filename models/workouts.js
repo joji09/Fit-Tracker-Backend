@@ -2,6 +2,7 @@ const db = require("../db");
 const axios = require("axios");
 const { BadRequestError, UnauthorizedError, NotFoundError } = require("../expressError");
 
+// Model to fetch information from the Free API: WorkoutDB
 class Workout {
 
     static API_URL = "https://exercisedb.p.rapidapi.com/exercises";
@@ -15,6 +16,7 @@ class Workout {
         this.instructions = instructions;
     }
 
+    // Fetches Workouts by BodyParts
     static async fetchWorkoutsByBodyPart(bodyPart){
         try {
             const response = await axios.get(`${this.API_URL}/bodyPart/${bodyPart}`, {
@@ -40,6 +42,7 @@ class Workout {
         }
     }
 
+    // Fetches Workout, API default result is 10.
     static async fetchWorkouts(){
         try {
             const response = await axios.get(`${this.API_URL}`, {
@@ -65,6 +68,7 @@ class Workout {
         }
     }
 
+    // Fetches Exercise from API using ExerciseId
     static async fetchExercise(id){
         try {
             const response = await axios.get(`${this.API_URL}/exercise/${id}`, {

@@ -1,10 +1,10 @@
 const db = require("../db");
 
 class WorkoutQueries {
+
+    // Saves Workout ExerciseId, Exercise's Name and BodyPart from the API to the Workout table.
     static async SaveWorkout(exerciseId, workoutName, bodyPart) {
         try {
-            // const { exerciseId, workoutName, bodyPart } = workoutInfo;
-
             // Check if workout with the given ExerciseId already exists
         const existingWorkout = await db.query(
             `SELECT WorkoutId FROM Workouts WHERE ExerciseId = $1`,
@@ -35,6 +35,7 @@ class WorkoutQueries {
         }
     }
 
+    // Fetches ExerciseId using the WorkoutId from the Workout Table
     static async getExerciseId(workoutId) {
         try {
             const exerciseIdResult = await db.query(

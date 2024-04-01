@@ -5,7 +5,7 @@ const { BCRYPT_WORK_FACTOR } = require("../config");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 
 class User {
-
+    // Authenticates the user's username and password
     static async authenticate(username, password){
         const result = await db.query(
             `SELECT username, password, first_name AS "firstName", last_name AS "lastName", email FROM users WHERE username = $1`,[username],
@@ -23,6 +23,7 @@ class User {
         throw new UnauthorizedError("Invalid username/password");
     }
 
+    // Handles registration query
     static async register({ username, password, firstName, lastName, email }){
         const duplicateCheck = await db.query(
             `SELECT username FROM users WHERE username = $1`, [username],
@@ -32,7 +33,6 @@ class User {
             throw new BadRequestError(`Duplicate username: ${username}`);
         }
        
-        // console.log(BCRYPT_WORK_FACTOR);
         const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
         const result = await db.query(
@@ -59,6 +59,7 @@ class User {
         return user;
     }
 
+    // Fetches user's userId
     static async getUserId(username) {
         console.log(`getUserId username ${username}`);
         const result = await db.query(
@@ -70,7 +71,6 @@ class User {
 
         if (!user) throw new NotFoundError(`User with username: ${username} not found`);
         
-        console.log(`returning userid ${user.userid}`);
         return user.userid;
     }
 
@@ -87,8 +87,6 @@ class User {
                 lastName: "last_name",
             });
 
-            console.log(username);
-            console.log(setCols.firstName);
             const usernameVarIdx = "$" + (values.length + 1);
 
             const querySql = `UPDATE users SET ${setCols} WHERE username=${usernameVarIdx}
